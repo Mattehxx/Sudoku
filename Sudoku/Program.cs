@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Sudoku
+﻿namespace Sudoku
 {
     internal class Program
     {
-        public static readonly int[,] table = { 
+        public static readonly int[,] table = {
             { 5, 3, 0, 0, 7, 0, 0, 0, 0 },
             { 6, 0, 0, 1, 9, 5, 0, 0, 0 },
             { 0, 9, 8, 0, 0, 0, 0, 6, 0 },
@@ -28,30 +22,33 @@ namespace Sudoku
             return false;
         }
 
-        public static bool IsEditable (int x, int y)
+        public static bool IsEditable(int x, int y)
         {
-            //value[x][y] == 0
+            if (table[y, x] == 0)
+            {
+                return true;
+            }
             return false;
         }
 
-        public static bool CheckValue (int value)
+        public static bool CheckValue(int value)
         {
             //1 - 9
             return false;
         }
 
-        public static bool EditTable (int x, int y, int value)
+        public static bool EditTable(int x, int y, int value)
         {
             //Edit the temporary table
             return false;
         }
 
-        public static string PrintTable ()
+        public static string PrintTable()
         {
             //Print the editable table
             return "";
         }
- 
+
         static void Main(string[] args)
         {
 
