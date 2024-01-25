@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,6 +38,10 @@ namespace Sudoku
         public static bool CheckValue (int value)
         {
             //1 - 9
+            if(value>=1 && value <= 9)
+            {
+                return true;
+            }
             return false;
         }
 
