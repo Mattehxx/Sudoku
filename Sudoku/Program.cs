@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,6 +22,8 @@ namespace Sudoku
         };
 
         public static int[,] editableTable = (int[,])table.Clone();
+
+        public const string instructions = "Insert x, y and value in the following format (x, y, value): ";
 
         public static bool CheckCoordinates(int x, int y)
         {
@@ -48,13 +51,46 @@ namespace Sudoku
 
         public static string PrintTable ()
         {
-            //Print the editable table
-            return "";
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(PrintHorizontalLines());
+
+            for(int y = 0; y < table.GetLength(0); y++)
+            {
+                for (int x = 0; x < table.GetLength(1); x++)
+                {
+                    sb.Append(editableTable[y, x]);
+                    if (x < table.GetLength(0) - 1)
+                        sb.Append(" | ");
+                }
+                sb.AppendLine();
+                sb.AppendLine(PrintHorizontalLines());
+            }
+
+            sb.AppendLine();
+            sb.Append(instructions);
+
+            return sb.ToString();
+        }
+
+        public static string PrintHorizontalLines()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < table.GetLength(0); i++)
+            {
+                if (i < table.GetLength(0) - 1)
+                    sb.Append("- - ");
+                else
+                    sb.Append("-");
+            }
+
+            return sb.ToString();
         }
  
         static void Main(string[] args)
         {
-
+            Console.Write(PrintTable());
+            Console.ReadLine();
         }
     }
 }
