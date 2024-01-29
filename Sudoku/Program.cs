@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Server;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +25,8 @@ namespace Sudoku
 
         public static int[,] editableTable = (int[,])table.Clone();
 
-        public const string instructions = "Insert x, y and value in the following format (x, y, value): ";
+        public const string instructions = "Press enter to close the program, " +
+            "otherwise insert x, y and value in the following format (x, y, value): ";
 
         public static bool CheckCoordinates(int x, int y)
         {
@@ -49,7 +52,7 @@ namespace Sudoku
             return false;
         }
 
-        public static string PrintTable ()
+        public static void PrintTable ()
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(PrintHorizontalLines());
@@ -67,9 +70,13 @@ namespace Sudoku
             }
 
             sb.AppendLine();
-            sb.Append(instructions);
 
-            return sb.ToString();
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine(sb.ToString());
+
+            Console.ResetColor();
+
+            Console.Write(instructions);
         }
 
         public static string PrintHorizontalLines()
@@ -89,8 +96,37 @@ namespace Sudoku
  
         static void Main(string[] args)
         {
-            Console.Write(PrintTable());
-            Console.ReadLine();
+            string readLine = "";
+
+            do
+            {
+                PrintTable();
+                readLine = Console.ReadLine();
+                readLine = readLine.Trim();
+                if (readLine.Length > 0)
+                {
+                    var parts = readLine.Split(',');
+
+                    if (parts.Length == 3)
+                    {
+                        if (int.TryParse(parts[0], out int x) &&
+                        int.TryParse(parts[1], out int y) &&
+                        int.TryParse(parts[2], out int value))
+                        {
+                            EditTable(x, y, value);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Inserted values are not acceptable");
+                            Console.WriteLine();
+                        }
+                    } else
+                    {
+                        Console.WriteLine("Missing argouments");
+                        Console.WriteLine();
+                    }
+                }
+            } while (readLine != "");
         }
     }
 }
