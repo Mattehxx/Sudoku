@@ -308,6 +308,7 @@ namespace Sudoku
 
             do
             {
+                Console.Clear();
                 PrintColouredTable();
                 readLine = Console.ReadLine();
                 readLine = readLine.Trim();
