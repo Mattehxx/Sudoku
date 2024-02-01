@@ -30,7 +30,9 @@ namespace Sudoku
 
         public static bool CheckCoordinates(int x, int y)
         {
-            //0 - 8
+            if ((x >= 0 && x <= 8) && (y >= 0 && y <= 8))
+                return true;
+
             return false;
         }
 
