@@ -39,6 +39,7 @@ namespace Sudoku
 
         public static bool IsEditable(int x, int y)
         {
+
             if (table[y, x] == 0)
             {
                 return true;
@@ -61,7 +62,7 @@ namespace Sudoku
             if (CheckCoordinates(x, y) && CheckValue(value) && IsEditable(x, y) && CheckBoxes(x, y, value)
                 && CheckRows(x, y, value) && CheckColumns(x, y, value))
             {
-                editableTable[x, y] = value;
+                editableTable[y, x] = value;
                 return true;
             } 
             return false;
