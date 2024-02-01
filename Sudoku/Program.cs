@@ -187,119 +187,48 @@ namespace Sudoku
         {
             if (editableTable[y, x] == value)
                 return true;
-            if ((x >= 0 && x <= 2) && (y >= 0 && y <= 2))
+            int xMin = 0, xMax = 0, yMin = 0, yMax = 0;
+            
+            if (x >= 0 && x <= 2)
             {
-                for (int i = 0; i < 3; i++)
-                {
-                    for (int j = 0; j < 3; j++)
+                xMin = 0;
+                xMax = 3;
+            }
+            else if (x >= 3 && x <= 5)
+            {
+                xMin = 3;
+                xMax = 6;
+            }
+            else if (x >= 6 && x <= 8)
+            {
+                xMin = 6;
+                xMax = 9;
+            }
+            if (y >= 0 && y <= 2)
+            {
+                yMin = 0;
+                yMax = 3;
+            }
+            else if (y >= 3 && y <= 5)
+            {
+                yMin = 3;
+                yMax = 6;
+            }
+            else if (y >= 6 && y <= 8)
+            {
+                yMin = 6;
+                yMax = 9;
+            }
+            
+            for (int i = yMin; i < yMax; i++)
+            {
+                for (int j = xMin; j < xMax; j++)
                     if (editableTable[i, j] == value)
                     {
                         return false;
                     }
-                }
             }
-
-            if ((x >= 3 && x <= 5) && (y >= 0 && y <= 2))
-            {
-                for (int i = 0; i < 3; i++)
-                {
-                    for (int j = 3; j < 6; j++)
-                        if (editableTable[i, j] == value)
-                        {
-                            return false;
-                        }
-                }
-            }
-
-            if ((x >= 6 && x <= 8) && (y >= 0 && y <= 2))
-            {
-                for (int i = 0; i < 3; i++)
-                {
-                    for (int j = 6; j < 9; j++)
-                        if (editableTable[i, j] == value)
-                        {
-                            return false;
-                        }
-                }
-            }
-
-            if ((x >= 0 && x <= 2) && (y >= 3 && y <= 5))
-            {
-                for (int i = 3; i < 6; i++)
-                {
-                    for (int j = 0; j < 3; j++)
-                        if (editableTable[i, j] == value)
-                        {
-                            return false;
-                        }
-                }
-            }
-            if ((x >= 0 && x <= 2) && (y >= 3 && y <= 5))
-            {
-                for (int i = 3; i < 6; i++)
-                {
-                    for (int j = 0; j < 3; j++)
-                        if (editableTable[i, j] == value)
-                        {
-                            return false;
-                        }
-                }
-            }
-            if ((x >= 3 && x <= 5) && (y >= 3 && y <= 5))
-            {
-                for (int i = 3; i < 6; i++)
-                {
-                    for (int j = 3; j < 6; j++)
-                        if (editableTable[i, j] == value)
-                        {
-                            return false;
-                        }
-                }
-            }
-            if ((x >= 6 && x <= 8) && (y >= 3 && y <= 5))
-            {
-                for (int i = 3; i < 6; i++)
-                {
-                    for (int j = 6; j < 9; j++)
-                        if (editableTable[i, j] == value)
-                        {
-                            return false;
-                        }
-                }
-            }
-            if ((x >= 0 && x <= 2) && (y >= 6 && y <= 8))
-            {
-                for (int i = 6; i < 9; i++)
-                {
-                    for (int j = 0; j < 3; j++)
-                        if (editableTable[i, j] == value)
-                        {
-                            return false;
-                        }
-                }
-            }
-            if ((x >= 3 && x <= 5) && (y >= 6 && y <= 8))
-            {
-                for (int i = 6; i < 9; i++)
-                {
-                    for (int j = 3; j < 6; j++)
-                        if (editableTable[i, j] == value)
-                        {
-                            return false;
-                        }
-                }
-            }
-            if ((x >= 6 && x <= 8) && (y >= 6 && y <= 8))
-            {
-                for (int i = 6; i < 9; i++)
-                {
-                    for (int j = 6; j < 9; j++)
-                        if (editableTable[i, j] == value)
-                        {
-                            return false;
-                        }
-                }
-            }
+            
             return true;
         }
 
