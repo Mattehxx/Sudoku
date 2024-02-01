@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Server;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,9 +25,14 @@ namespace Sudoku
 
         public static int[,] editableTable = (int[,])table.Clone();
 
+        public const string instructions = "Press enter to close the program, " +
+            "otherwise insert x, y and value in the following format (x, y, value): ";
+
         public static bool CheckCoordinates(int x, int y)
         {
-            //0 - 8
+            if ((x >= 0 && x <= 8) && (y >= 0 && y <= 8))
+                return true;
+
             return false;
         }
 
@@ -50,6 +58,46 @@ namespace Sudoku
             return false;
         }
 
+        public static void PrintTable ()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(PrintHorizontalLines());
+
+            for(int y = 0; y < table.GetLength(0); y++)
+            {
+                for (int x = 0; x < table.GetLength(1); x++)
+                {
+                    sb.Append(editableTable[y, x]);
+                    if (x < table.GetLength(0) - 1)
+                        sb.Append(" | ");
+                }
+                sb.AppendLine();
+                sb.AppendLine(PrintHorizontalLines());
+            }
+
+            sb.AppendLine();
+
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine(sb.ToString());
+
+            Console.ResetColor();
+
+            Console.Write(instructions);
+        }
+
+        public static string PrintHorizontalLines()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < table.GetLength(0); i++)
+            {
+                if (i < table.GetLength(0) - 1)
+                    sb.Append("- - ");
+                else
+                    sb.Append("-");
+            }
+
+            return sb.ToString();
         public static bool CheckColumns(int x, int y, int value)
         {
             if (editableTable[y, x] == value)
@@ -204,7 +252,37 @@ namespace Sudoku
  
         static void Main(string[] args)
         {
+            string readLine = "";
 
+            do
+            {
+                PrintTable();
+                readLine = Console.ReadLine();
+                readLine = readLine.Trim();
+                if (readLine.Length > 0)
+                {
+                    var parts = readLine.Split(',');
+
+                    if (parts.Length == 3)
+                    {
+                        if (int.TryParse(parts[0], out int x) &&
+                        int.TryParse(parts[1], out int y) &&
+                        int.TryParse(parts[2], out int value))
+                        {
+                            EditTable(x, y, value);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Inserted values are not acceptable");
+                            Console.WriteLine();
+                        }
+                    } else
+                    {
+                        Console.WriteLine("Missing argouments");
+                        Console.WriteLine();
+                    }
+                }
+            } while (readLine != "");
         }
     }
 }
