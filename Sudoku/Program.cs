@@ -58,7 +58,8 @@ namespace Sudoku
 
         public static bool EditTable(int x, int y, int value)
         {
-            if (CheckCoordinates(x, y) && CheckValue(value) && IsEditable(x, y))
+            if (CheckCoordinates(x, y) && CheckValue(value) && IsEditable(x, y) && CheckBoxes(x, y, value)
+                && CheckRows(x, y, value) && CheckColumns(x, y, value))
             {
                 editableTable[x, y] = value;
                 return true;
@@ -75,7 +76,15 @@ namespace Sudoku
             {
                 for (int x = 0; x < table.GetLength(1); x++)
                 {
-                    sb.Append(editableTable[y, x]);
+                    if (editableTable[y, x] == 0)
+                    {
+                        sb.Append(" ");
+                    }
+                    else
+                    {
+                        sb.Append(editableTable[y, x]);
+                    }
+                    
                     if (x < table.GetLength(0) - 1)
                         sb.Append(" | ");
                 }
@@ -93,6 +102,43 @@ namespace Sudoku
             Console.Write(instructions);
         }
 
+        public static void PrintColouredTable ()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            for (int y = 0; y < table.GetLength(0); y++)
+            {
+                for (int x = 0; x < table.GetLength(1); x++)
+                {
+                    if (editableTable[y, x] == 0)
+                    {
+                        Console.Write(' ');
+                    }
+                    else if (editableTable[y, x] == table[y, x])
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write(editableTable[y, x]);
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.Write(editableTable[y, x]);
+                    }
+
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    if (x < table.GetLength(0) - 1)
+                        Console.Write(" | ");
+                }
+
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine();
+                Console.WriteLine(PrintHorizontalLines());
+            }
+
+            Console.WriteLine();
+            Console.ResetColor();
+            Console.Write(instructions);
+        }
+
         public static string PrintHorizontalLines()
         {
             StringBuilder sb = new StringBuilder();
@@ -106,6 +152,8 @@ namespace Sudoku
             }
 
             return sb.ToString();
+        }
+
         public static bool CheckColumns(int x, int y, int value)
         {
             if (editableTable[y, x] == value)
@@ -251,11 +299,7 @@ namespace Sudoku
                         }
                 }
             }
-        }
-        public static string PrintTable ()
-        {
-            //Print the editable table
-            return "";
+            return true;
         }
 
         static void Main(string[] args)
@@ -264,7 +308,7 @@ namespace Sudoku
 
             do
             {
-                PrintTable();
+                PrintColouredTable();
                 readLine = Console.ReadLine();
                 readLine = readLine.Trim();
                 if (readLine.Length > 0)
